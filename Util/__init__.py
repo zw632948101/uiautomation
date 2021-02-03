@@ -4,3 +4,4 @@
 # @Author : wei.zhang
 # @File : __init__.py.py
 # @Software: PyCharm
+from .fileDirConfig.getfiledir import *

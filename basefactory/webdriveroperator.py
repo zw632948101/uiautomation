@@ -17,7 +17,7 @@ from Util.fileDirConfig.getfiledir import SCREENCAPTUREDIR
 
 class WebdriverOperator(object):
 
-    def __init__(self, driver: Chrome):
+    def __init__(self, driver: Chrome = None):
         self.driver = driver
         self.timeout = config.get('TIMEOUT')
         self.poll_frequency = config.get('POLL_FREQUENCY')
@@ -28,12 +28,14 @@ class WebdriverOperator(object):
         截屏保存
         :return:返回路径
         """
-        pic_name = str.split(str(time.time()), '.')[0] + str.split(str(time.time()), '.')[1] + '.png'
+        pic_name = str.split(str(time.time()), '.')[0] + str.split(str(time.time()), '.')[
+            1] + '.png'
         screent_path = SCREENCAPTUREDIR + '/' + pic_name
         self.driver.get_screenshot_as_file(screent_path)
         return screent_path
 
     def gotosleep(self, **kwargs):
+        log.warning('线程等待：3秒')
         time.sleep(3)
         return True, '等待成功'
 
@@ -47,6 +49,7 @@ class WebdriverOperator(object):
             s = kwargs['time']
         except KeyError:
             s = 10
+        log.info('隐式等待 元素加载完成')
         try:
             self.driver.implicitly_wait(s)
         except NoSuchElementException:
@@ -61,10 +64,10 @@ class WebdriverOperator(object):
         try:
             elem = WebDriverWait(self.driver, self.timeout, self.poll_frequency).until(
                 lambda x: x.find_element(*locator))
-            return True, elem
         except NoSuchElementException:
             log('元素[' + locator[1] + ']等待出现超时')
             return False, '元素[' + locator[1] + ']等待出现超时'
+        return True, elem
 
     def __find_elements(self, locator: tuple):
         """

@@ -2,8 +2,10 @@ which_project: &which_project flowerChaser
 env: &env
   run: QA
   updateActionAPI: QA_API
-  BROWSER: chrome
+  BROWSER: Chrome # 选择使用的浏览器 Chrome Edge IE Firfox
   version: 2.5.1
+  headless: False # 是否显示页面True False
+  URL_UNDER_TEST: http://qa-flowers.zhuihuazu.com/login # 测试地址
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9b500f8602951206c6f9b85cab245bd1e90a2c42c9b0fb3883c44aadb5235b9dc94d8411f761298d477315e878eb9a87f
   projectName: *which_project
 

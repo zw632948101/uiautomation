@@ -5,7 +5,6 @@
 # @File : __init__.py.py
 # @Software: PyCharm
 from .Config import *
-import os
-print(os.path.abspath('.'))
+
 config = get_config()
 ini = get_ini()

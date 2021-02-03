@@ -4,15 +4,18 @@
 # @Author: wei.zhang
 # @File : test_day.py
 # @Software: PyCharm
+from basefactory import Base
+from pageObj.baiduLogin import LoginPage
 import time
 
-from basefactory import browser
 
+class TestDay(Base):
+    def setup(self) -> None:
+        isok, result = self.openweb.open_url('http://qa-flowers.zhuihuazu.com/login')
+        self.loginpage = LoginPage(result)
 
-class TestDay(browser):
-    def test_dar(self):
-
-        istrue, driver = self.open_url(locator='http://www.baidu.com')
-        time.sleep(5)
-        browser.close_browser()
-
+    def test_login(self):
+        _isOK, _strLog = self.loginpage.Wait_login_elements_visible()
+        assert _isOK, True
+        _isOK, _strLog = self.loginpage.Click_phone_number_login()
+        time.sleep(10)
