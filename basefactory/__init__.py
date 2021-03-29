@@ -7,7 +7,7 @@
 
 from .browseroperator import BrowserOperator
 from .webdriveroperator import WebdriverOperator
-from Util.Config import config
+from Util.conf import config
 
 browser = BrowserOperator
 webdriver = WebdriverOperator

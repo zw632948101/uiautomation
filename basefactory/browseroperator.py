@@ -6,14 +6,20 @@
 # @Software: PyCharm
 import os
 from selenium import webdriver
-from Util.Config import config
+from Util.conf import config
 from Util.log import log
 from Util import BASEFACTORYDIR
 
 
 class BrowserOperator(object):
     def __init__(self):
-        self.driver_path = os.path.join(BASEFACTORYDIR, 'chromedriver')
+        import platform
+        system = platform.system()
+        if system == 'Windows':
+            find_util = 'chromedriver.exe'
+        else:
+            find_util = 'chromedriver'
+        self.driver_path = os.path.join(BASEFACTORYDIR, find_util)
 
     def open_url(self, **kwargs):
         """
@@ -26,8 +32,11 @@ class BrowserOperator(object):
             # 禁用浏览器正在被自动化程序控制的提示
             options.add_argument('--disable-infobars')
             # 浏览器不提供可视化页面
-            if not config.get('headless'):
+            if not config.get('HEADLESS'):
                 options.add_argument('--headless')
+            if config.get('DEBUG_MODE') == 'debugger':
+                log.info(f'本地调试：{config.get("DEBUGGER_ADDERESS")},为空时不复用浏览器')
+                options.debugger_address = config.get('DEBUGGER_ADDERESS')
             # 屏蔽自动化受控提示 && 开发者提示
             options.add_experimental_option("excludeSwitches", ['enable-automation'])
             # 禁用浏览器正在被自动化程序控制的提示
@@ -72,6 +81,13 @@ class BrowserOperator(object):
                                                 executable_path=self.driver_path)
             self.driver.maximize_window()
             self.driver.get(url)
+            if config.get('DEBUG_MODE') == 'cookies':
+                log.info('使用cookies测试')
+                for cookie in config.get('COOKIES'):
+                    if 'expiry' in cookie.keys():
+                        cookie.pop('expiry')
+                    self.driver.add_cookie(cookie)
+                self.driver.refresh()
         except Exception as e:
             log.error(e.msg)
             return False, e

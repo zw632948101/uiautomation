@@ -10,7 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import Chrome
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from Util.Config import config
+from Util.conf import config
 from Util.log import log
 from Util.fileDirConfig.getfiledir import SCREENCAPTUREDIR
 

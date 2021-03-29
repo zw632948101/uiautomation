@@ -3,7 +3,7 @@
 import requests
 import json
 import mimetypes
-from Util.Config import config
+from Util.conf import config
 from Util.log import log
 import urllib
 
